@@ -1,15 +1,10 @@
-using API.Data;
-using Microsoft.EntityFrameworkCore;
+using API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddDbContext<DataContext>(options => {
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")); // Inject DbContext
-});
-
-builder.Services.AddCors();
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityService(builder.Configuration);
 
 //Swagger Configurations
 builder.Services.AddEndpointsApiExplorer();
@@ -28,7 +23,9 @@ app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localho
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseAuthentication(); // First we need to Authenticate someone and then Authorization
+
+app.UseAuthorization(); // After Authentication 
 
 app.MapControllers();
 

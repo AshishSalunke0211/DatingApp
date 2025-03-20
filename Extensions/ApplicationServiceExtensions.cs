@@ -18,6 +18,8 @@ public static class ApplicationServiceExtensions
 
         services.AddCors();
         services.AddScoped<ITokenService, TokenService>(); // Inject interface with implemented class
+        services.AddScoped<IUserRepository , UserRepository>(); // Inject UserRepository 
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // Inject Automapper profile
 
         return services;
 
